@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!-- HTML5 문서임을 브라우저에 알려줍니다. -->
+
+<html lang="ko">
+<head>
+    <!-- 한글이 깨지지 않도록 문자 인코딩을 설정합니다. -->
+    <meta charset="UTF-8">
+
+    <!-- 반응형 웹에서 사용하는 설정입니다. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 브라우저 탭에 표시되는 제목입니다. -->
+    <title>자기소개 페이지</title>
+</head>
+
+<body>
+
+    <!-- ===================== -->
+    <!-- Header : 사이트 상단 -->
+    <!-- ===================== -->
+    <header>
+        <h1>김철수의 자기소개</h1>
+        <p>안녕하세요. 웹 개발자를 꿈꾸고 있습니다.</p>
+
+        <!-- nav : 다른 페이지나 위치로 이동하는 메뉴 -->
+        <nav>
+            <a href="#about">소개</a> |
+            <a href="#skill">기술</a> |
+            <a href="#contact">연락처</a>
+        </nav>
+    </header>
+
+    <hr>
+
+    <!-- main : 페이지의 핵심 내용 -->
+    <main>
+
+        <!-- section : 하나의 주제를 나타냅니다. -->
+        <section id="about">
+            <h2>🙋 자기소개</h2>
+
+            <!-- img : 이미지 -->
+            <img src="profile.png"
+                 alt="프로필 사진"
+                 width="200">
+            <p>(AI로 생성한 이미지입니다.)</p>
+
+            <p>
+                저는 웹 개발자가 되기 위해 공부하고 있습니다.
+                HTML, CSS, JavaScript를 배우는 중입니다.
+            </p>
+        </section>
+
+        <hr>
+
+        <section id="skill">
+            <h2>💻 기술 스택</h2>
+
+            <!-- ul : 순서 없는 목록 -->
+            <ul>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JavaScript</li>
+                <li>Java</li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>🎯 취미</h2>
+
+            <!-- ol : 순서 있는 목록 -->
+            <ol>
+                <li>게임</li>
+                <li>운동</li>
+                <li>영화 보기</li>
+            </ol>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>📚 좋아하는 사이트</h2>
+
+            <!-- target="_blank" : 새 탭에서 열기 -->
+            <a href="https://developer.mozilla.org/"
+               target="_blank">
+                MDN 바로가기
+            </a>
+        </section>
+
+        <hr>
+
+        <!-- article : 독립적인 하나의 콘텐츠 -->
+        <article>
+            <h2>📢 오늘의 한마디</h2>
+
+            <p>
+                "꾸준히 공부하면 반드시 성장합니다."
+            </p>
+        </article>
+
+        <hr>
+
+        <!-- form : 사용자 입력을 받는 영역 -->
+        <section id="contact">
+            <h2>📨 방명록</h2>
+
+            <form>
+
+                <!-- label은 input과 연결해주는 역할 -->
+                <div>
+                    <label for="name">이름</label><br>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="이름을 입력하세요">
+                </div>
+
+                <br>
+
+                <div>
+                    <label for="message">내용</label><br>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="5"
+                        cols="40"
+                        placeholder="메시지를 입력하세요"></textarea>
+                </div>
+
+                <br>
+
+                <button type="submit">등록</button>
+            </form>
+
+        </section>
+
+    </main>
+
+    <hr>
+
+    <!-- footer : 페이지 하단 -->
+    <footer>
+
+        <p>
+            © 2026 김철수
+        </p>
+
+        <p>
+            이메일 :
+            <a href="mailto:test@test.com">
+                test@test.com
+            </a>
+        </p>
+
+    </footer>
+
+</body>
+</html>
