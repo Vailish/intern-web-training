@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자기소개 페이지 - Float 레이아웃</title>
+
+    <style>
+        /* ============================================= */
+        /* 1. 공통 스타일 (모든 레이아웃 방식에서 동일)        */
+        /* ============================================= */
+
+        /* 모든 요소에 box-sizing: border-box 적용
+           -> padding, border가 width 계산에 포함되어 레이아웃 계산이 쉬워짐 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            color: #2b2b2b;
+            line-height: 1.6;
+            background-color: #f7f7f9;
+        }
+
+        /* 페이지 전체 폭을 제한하고 가운데 정렬 */
+        header, main, footer {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+
+        /* ----- Header ----- */
+        header {
+            text-align: center;
+            padding-top: 40px;
+        }
+
+        header h1 {
+            font-size: 32px;
+            color: #2c3e91;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 16px;
+        }
+
+        /* nav 메뉴: 아직 float를 쓰지 않고 inline-block으로 가로 배치
+           (float 학습 예제이므로 메뉴는 간단하게 inline 처리) */
+        nav a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #2c3e91;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 24px 0;
+        }
+
+        /* section, article 공통 카드 스타일 */
+        section, article {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+
+        section h2, article h2 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: #2c3e91;
+        }
+
+        /* 프로필 이미지를 원형으로 */
+        #about img {
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 8px auto;
+        }
+
+        #about p {
+            text-align: center;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 8px;
+        }
+
+        article p {
+            font-style: italic;
+            font-size: 18px;
+            text-align: center;
+            color: #444;
+        }
+
+        /* ----- form ----- */
+        form label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        form input, form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        form button {
+            background-color: #2c3e91;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        form button:hover {
+            background-color: #1f2c6e;
+        }
+
+        footer {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            padding-bottom: 40px;
+        }
+
+        footer a {
+            color: #2c3e91;
+        }
+
+
+        /* ============================================= */
+        /* 2. FLOAT 레이아웃 핵심 영역                       */
+        /*    기술 스택 카드를 float로 가로 배치합니다.        */
+        /* ============================================= */
+
+        /* float을 사용할 부모는 자식이 떠버려서(float) 높이가 0이 되는
+           문제가 생기므로, ::after를 이용해 강제로 높이를 잡아줍니다.
+           -> 이것을 "clearfix" 기법이라고 부릅니다. */
+        .skill-list::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        /* 기존 ul의 기본 스타일(불릿, 들여쓰기)을 제거하고 카드 형태로 변경 */
+        .skill-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .skill-list li {
+            /* float: left -> 요소를 왼쪽으로 띄워서 가로로 나란히 배치 */
+            float: left;
+
+            /* 4칸 카드를 만들기 위해 너비를 25%로 지정
+             (4 x 25% = 100%) */
+            width: 25%;
+
+            /* float된 요소끼리는 margin이 겹치지 않으므로
+               박스 사이 여백은 padding/box로 직접 조절해야 함 */
+            padding: 8px;
+            text-align: center;
+        }
+
+        .skill-list li span {
+            display: block;
+            background-color: #eef1fb;
+            color: #2c3e91;
+            font-weight: bold;
+            padding: 16px 0;
+            border-radius: 8px;
+        }
+
+        /* 화면이 좁아지면 float 레이아웃은 한 줄에 다 들어가지 못해
+           깨지기 쉬우므로, 미디어쿼리로 2칸씩 보이도록 보정 */
+        @media (max-width: 600px) {
+            .skill-list li {
+                width: 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>김철수의 자기소개</h1>
+        <p>안녕하세요. 웹 개발자를 꿈꾸고 있습니다.</p>
+
+        <nav>
+            <a href="#about">소개</a> |
+            <a href="#skill">기술</a> |
+            <a href="#contact">연락처</a>
+        </nav>
+    </header>
+
+    <hr>
+
+    <main>
+
+        <section id="about">
+            <h2>🙋 자기소개</h2>
+
+            <img src="profile.png" alt="프로필 사진" width="160">
+            <p>(AI로 생성한 이미지입니다.)</p>
+
+            <p>
+                저는 웹 개발자가 되기 위해 공부하고 있습니다.
+                HTML, CSS, JavaScript를 배우는 중입니다.
+            </p>
+        </section>
+
+        <section id="skill">
+            <h2>💻 기술 스택</h2>
+
+            <!-- float 방식으로 가로 정렬되는 기술 카드 목록 -->
+            <ul class="skill-list">
+                <li><span>HTML</span></li>
+                <li><span>CSS</span></li>
+                <li><span>JavaScript</span></li>
+                <li><span>Java</span></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>🎯 취미</h2>
+            <ol>
+                <li>게임</li>
+                <li>운동</li>
+                <li>영화 보기</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>📚 좋아하는 사이트</h2>
+            <a href="https://developer.mozilla.org/" target="_blank">MDN 바로가기</a>
+        </section>
+
+        <article>
+            <h2>📢 오늘의 한마디</h2>
+            <p>"꾸준히 공부하면 반드시 성장합니다."</p>
+        </article>
+
+        <section id="contact">
+            <h2>📨 방명록</h2>
+
+            <form>
+                <div>
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+                </div>
+
+                <br>
+
+                <div>
+                    <label for="message">내용</label>
+                    <textarea id="message" name="message" rows="5" cols="40" placeholder="메시지를 입력하세요"></textarea>
+                </div>
+
+                <br>
+
+                <button type="submit">등록</button>
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 김철수</p>
+        <p>이메일 : <a href="mailto:test@test.com">test@test.com</a></p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flexbox 완전 정리 예시</title>
+
+<style>
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        background: #f5f6fa;
+        color: #222;
+        margin: 0;
+        padding: 24px;
+        line-height: 1.6;
+    }
+
+    h1 {
+        text-align: center;
+        color: #2c3e91;
+    }
+
+    .intro {
+        max-width: 800px;
+        margin: 0 auto 32px auto;
+        text-align: center;
+        color: #555;
+    }
+
+    /* 각 예시를 담는 카드 */
+    .demo {
+        max-width: 800px;
+        margin: 0 auto 28px auto;
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .demo h2 {
+        font-size: 17px;
+        color: #2c3e91;
+        margin: 0 0 4px 0;
+    }
+
+    .demo .desc {
+        font-size: 13px;
+        color: #777;
+        margin-bottom: 10px;
+    }
+
+    /* 코드 표시용 */
+    .code {
+        background: #2b2b3a;
+        color: #e6e6e6;
+        font-family: "Consolas", monospace;
+        font-size: 13px;
+        padding: 10px 14px;
+        border-radius: 6px;
+        margin-bottom: 14px;
+        overflow-x: auto;
+        white-space: pre;
+    }
+    .code .prop { color: #7fd0ff; }
+    .code .val  { color: #ffd479; }
+
+    /* 데모 안의 박스(아이템) 공통 스타일 */
+    .box {
+        background: #4c5ed1;
+        color: #fff;
+        font-weight: bold;
+        font-size: 13px;
+        border-radius: 6px;
+        text-align: center;
+    }
+
+    /* container 기본 테두리 (시각적으로 영역을 표시) */
+    .container {
+        border: 2px dashed #b9c0f0;
+        background: #f3f4fd;
+        border-radius: 8px;
+        padding: 10px;
+        min-height: 80px;
+    }
+
+
+    /* ============================================= */
+    /* 1. flex-direction                              */
+    /* ============================================= */
+    .c-direction-row {
+        display: flex;
+        flex-direction: row; /* 기본값, 가로 방향 배치 */
+    }
+    .c-direction-col {
+        display: flex;
+        flex-direction: column; /* 세로 방향 배치 */
+        margin-top: 12px;
+    }
+    .c-direction-row .box, .c-direction-col .box {
+        padding: 14px;
+        margin: 4px;
+        width: 70px;
+    }
+
+
+    /* ============================================= */
+    /* 2. justify-content (주축 방향 정렬)              */
+    /* ============================================= */
+    .c-justify {
+        display: flex;
+        margin-bottom: 10px;
+    }
+    .c-justify .box { width: 60px; padding: 14px; }
+
+    .jc-start    { justify-content: flex-start; }
+    .jc-center   { justify-content: center; }
+    .jc-end      { justify-content: flex-end; }
+    .jc-between  { justify-content: space-between; }
+    .jc-around   { justify-content: space-around; }
+
+    .label {
+        font-size: 12px;
+        color: #999;
+        margin: 4px 0 2px 2px;
+    }
+
+
+    /* ============================================= */
+    /* 3. align-items (교차축 방향 정렬)                */
+    /* ============================================= */
+    .c-align {
+        display: flex;
+        height: 100px;
+        margin-bottom: 10px;
+    }
+    .c-align .box { width: 60px; padding: 14px; margin: 0 4px; }
+
+    .ai-start    { align-items: flex-start; }
+    .ai-center   { align-items: center; }
+    .ai-end      { align-items: flex-end; }
+    .ai-stretch  { align-items: stretch; } /* 높이를 지정 안 한 박스가 꽉 채워짐 */
+
+
+    /* ============================================= */
+    /* 4. flex-wrap                                   */
+    /* ============================================= */
+    .c-nowrap {
+        display: flex;
+        flex-wrap: nowrap; /* 줄바꿈 없음 -> 박스가 넘쳐도 한 줄 유지 */
+        overflow-x: auto;
+    }
+    .c-wrap {
+        display: flex;
+        flex-wrap: wrap; /* 공간이 부족하면 다음 줄로 줄바꿈 */
+        margin-top: 12px;
+    }
+    .c-nowrap .box, .c-wrap .box {
+        width: 110px;
+        padding: 14px;
+        margin: 4px;
+        flex-shrink: 0;
+    }
+
+
+    /* ============================================= */
+    /* 5. flex-grow / flex-shrink / flex-basis        */
+    /* ============================================= */
+    .c-grow {
+        display: flex;
+    }
+    .c-grow .box { padding: 14px; margin: 4px; }
+    .grow-1 { flex-grow: 1; }   /* 남는 공간을 1만큼 가져감 */
+    .grow-2 { flex-grow: 2; }   /* 남는 공간을 2만큼 가져감 (grow-1의 2배 차지) */
+    .grow-1b { flex-grow: 1; }
+
+
+    /* ============================================= */
+    /* 6. gap                                         */
+    /* ============================================= */
+    .c-gap {
+        display: flex;
+        gap: 16px; /* 아이템 사이 간격을 margin 없이 한 번에 지정 */
+    }
+    .c-gap .box { width: 60px; padding: 14px; }
+
+
+    /* ============================================= */
+    /* 7. align-self (개별 아이템만 다르게 정렬)         */
+    /* ============================================= */
+    .c-self {
+        display: flex;
+        height: 100px;
+        align-items: center; /* 기본은 중앙 정렬 */
+    }
+    .c-self .box { width: 60px; padding: 14px; margin: 0 4px; }
+    .self-start { align-self: flex-start; }
+    .self-end   { align-self: flex-end; }
+
+
+    /* ============================================= */
+    /* 8. 실전 예제 : 카드 레이아웃 (반응형)             */
+    /* ============================================= */
+    .practice {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .practice .box {
+        flex: 1 1 140px; /* 최소 140px, 남는 공간은 균등 분배 */
+        padding: 20px 0;
+    }
+</style>
+</head>
+<body>
+
+<h1>🧩 Flexbox 완전 정리</h1>
+<p class="intro">
+    이 파일 하나만 봐도 Flexbox의 핵심 속성을 모두 이해할 수 있도록
+    "코드 + 결과 화면"을 함께 보여줍니다.<br>
+    Flexbox는 <b>display: flex</b>를 부모(container)에 적용하는 순간부터 시작됩니다.
+</p>
+
+<!-- 1. flex-direction -->
+<div class="demo">
+    <h2>1. flex-direction — 배치 방향</h2>
+    <p class="desc">자식 요소들을 어느 방향으로 나열할지 정합니다.</p>
+
+    <div class="code">.container { <span class="prop">display</span>: flex; <span class="prop">flex-direction</span>: <span class="val">row</span>; }</div>
+    <div class="container c-direction-row">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+    </div>
+
+    <div class="code">.container { <span class="prop">flex-direction</span>: <span class="val">column</span>; }</div>
+    <div class="container c-direction-col">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+    </div>
+</div>
+
+<!-- 2. justify-content -->
+<div class="demo">
+    <h2>2. justify-content — 주축(가로) 방향 정렬</h2>
+    <p class="desc">row 방향일 때 좌우로 어떻게 배치할지 결정합니다.</p>
+
+    <div class="label">flex-start (기본값)</div>
+    <div class="container c-justify jc-start">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+
+    <div class="label">center</div>
+    <div class="container c-justify jc-center">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+
+    <div class="label">flex-end</div>
+    <div class="container c-justify jc-end">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+
+    <div class="label">space-between (양 끝은 붙고, 사이는 균등)</div>
+    <div class="container c-justify jc-between">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+
+    <div class="label">space-around (각 요소 둘레에 균등한 여백)</div>
+    <div class="container c-justify jc-around">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+</div>
+
+<!-- 3. align-items -->
+<div class="demo">
+    <h2>3. align-items — 교차축(세로) 방향 정렬</h2>
+    <p class="desc">row 방향일 때 위아래로 어떻게 배치할지 결정합니다. (컨테이너 높이가 있을 때 효과가 보임)</p>
+
+    <div class="label">flex-start</div>
+    <div class="container c-align ai-start">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+
+    <div class="label">center</div>
+    <div class="container c-align ai-center">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+
+    <div class="label">flex-end</div>
+    <div class="container c-align ai-end">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+
+    <div class="label">stretch (기본값, 높이를 컨테이너만큼 늘림)</div>
+    <div class="container c-align ai-stretch">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+</div>
+
+<!-- 4. flex-wrap -->
+<div class="demo">
+    <h2>4. flex-wrap — 줄바꿈 여부</h2>
+    <p class="desc">아이템들이 한 줄에 다 들어가지 않을 때 어떻게 처리할지 결정합니다. (화면 너비를 줄여보며 비교하세요)</p>
+
+    <div class="label">nowrap (기본값, 줄바꿈 없이 넘침)</div>
+    <div class="container c-nowrap">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+        <div class="box">4</div><div class="box">5</div><div class="box">6</div>
+    </div>
+
+    <div class="label">wrap (공간이 부족하면 다음 줄로)</div>
+    <div class="container c-wrap">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+        <div class="box">4</div><div class="box">5</div><div class="box">6</div>
+    </div>
+</div>
+
+<!-- 5. flex-grow -->
+<div class="demo">
+    <h2>5. flex-grow — 남는 공간을 나눠 가지는 비율</h2>
+    <p class="desc">컨테이너에 남는 공간이 있을 때, 비율대로 더 차지하게 만듭니다.</p>
+
+    <div class="code">.box2 { <span class="prop">flex-grow</span>: <span class="val">2</span>; } <span style="color:#888">/* 나머지는 flex-grow: 1 */</span></div>
+    <div class="container c-grow">
+        <div class="box grow-1">flex-grow: 1</div>
+        <div class="box grow-2">flex-grow: 2 (2배 차지)</div>
+        <div class="box grow-1b">flex-grow: 1</div>
+    </div>
+</div>
+
+<!-- 6. gap -->
+<div class="demo">
+    <h2>6. gap — 아이템 사이 간격</h2>
+    <p class="desc">margin을 일일이 주지 않고 컨테이너에서 한 번에 간격을 지정합니다.</p>
+
+    <div class="code">.container { <span class="prop">display</span>: flex; <span class="prop">gap</span>: <span class="val">16px</span>; }</div>
+    <div class="container c-gap">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+</div>
+
+<!-- 7. align-self -->
+<div class="demo">
+    <h2>7. align-self — 특정 아이템만 다르게 정렬</h2>
+    <p class="desc">align-items는 전체에 적용되지만, align-self는 아이템 하나에만 개별 적용됩니다.</p>
+
+    <div class="container c-self">
+        <div class="box self-start">flex-start</div>
+        <div class="box">기본(center)</div>
+        <div class="box self-end">flex-end</div>
+    </div>
+</div>
+
+<!-- 8. 실전 예제 -->
+<div class="demo">
+    <h2>8. 실전 예제 — 반응형 카드 목록</h2>
+    <p class="desc">flex-wrap + flex: 1 1 140px 조합으로 화면 크기에 따라 카드 개수가 자동으로 바뀝니다. (브라우저 창 크기를 줄여보세요)</p>
+
+    <div class="code">.box { <span class="prop">flex</span>: <span class="val">1 1 140px</span>; } <span style="color:#888">/* grow shrink basis */</span></div>
+    <div class="container practice">
+        <div class="box">카드 1</div>
+        <div class="box">카드 2</div>
+        <div class="box">카드 3</div>
+        <div class="box">카드 4</div>
+        <div class="box">카드 5</div>
+    </div>
+</div>
+
+</body>
+</html>

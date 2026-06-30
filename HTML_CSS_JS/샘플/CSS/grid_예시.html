@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grid 완전 정리 예시</title>
+
+<style>
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        background: #f5f6fa;
+        color: #222;
+        margin: 0;
+        padding: 24px;
+        line-height: 1.6;
+    }
+
+    h1 {
+        text-align: center;
+        color: #1f7a4d;
+    }
+
+    .intro {
+        max-width: 800px;
+        margin: 0 auto 32px auto;
+        text-align: center;
+        color: #555;
+    }
+
+    .demo {
+        max-width: 800px;
+        margin: 0 auto 28px auto;
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .demo h2 {
+        font-size: 17px;
+        color: #1f7a4d;
+        margin: 0 0 4px 0;
+    }
+
+    .demo .desc {
+        font-size: 13px;
+        color: #777;
+        margin-bottom: 10px;
+    }
+
+    .code {
+        background: #2b2b3a;
+        color: #e6e6e6;
+        font-family: "Consolas", monospace;
+        font-size: 13px;
+        padding: 10px 14px;
+        border-radius: 6px;
+        margin-bottom: 14px;
+        overflow-x: auto;
+        white-space: pre;
+    }
+    .code .prop { color: #7fd0ff; }
+    .code .val  { color: #ffd479; }
+
+    .box {
+        background: #2c9e63;
+        color: #fff;
+        font-weight: bold;
+        font-size: 13px;
+        border-radius: 6px;
+        text-align: center;
+        padding: 14px 4px;
+    }
+
+    .container {
+        border: 2px dashed #a9e0c2;
+        background: #f0fbf5;
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+    .label {
+        font-size: 12px;
+        color: #999;
+        margin: 4px 0 2px 2px;
+    }
+
+
+    /* ============================================= */
+    /* 1. grid-template-columns / rows                */
+    /* ============================================= */
+    .c-basic {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr; /* 3개의 칸, 동일한 비율 */
+        gap: 10px;
+    }
+
+    .c-rows {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 60px 60px; /* 행의 높이를 직접 지정 */
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+
+    /* ============================================= */
+    /* 2. repeat() 함수                                */
+    /* ============================================= */
+    .c-repeat {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 1fr을 4번 반복 = repeat(4,1fr) */
+        gap: 10px;
+    }
+
+
+    /* ============================================= */
+    /* 3. 비율이 다른 열 (1fr 2fr 1fr)                  */
+    /* ============================================= */
+    .c-fr {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr; /* 가운데 칸이 2배 넓음 */
+        gap: 10px;
+    }
+
+
+    /* ============================================= */
+    /* 4. grid-column / grid-row (칸 병합)              */
+    /* ============================================= */
+    .c-span {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 60px 60px;
+        gap: 10px;
+    }
+    .span-2col {
+        grid-column: span 2; /* 가로로 2칸을 차지 */
+    }
+    .span-2row {
+        grid-row: span 2; /* 세로로 2칸을 차지 */
+        background: #1f7a4d;
+    }
+
+
+    /* ============================================= */
+    /* 5. grid-template-areas (이름으로 영역 지정)       */
+    /* ============================================= */
+    .c-area {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        grid-template-rows: 60px 120px 50px;
+        gap: 10px;
+
+        /* 레이아웃을 그림처럼 글자로 미리 그려놓는 방식
+           -> 어떤 영역이 어디에 위치하는지 코드만 봐도 한눈에 보임 */
+        grid-template-areas:
+            "header header"
+            "sidebar main"
+            "footer footer";
+    }
+    .area-header  { grid-area: header;  background: #1f7a4d; }
+    .area-sidebar { grid-area: sidebar; }
+    .area-main    { grid-area: main; }
+    .area-footer  { grid-area: footer;  background: #1f7a4d; }
+
+
+    /* ============================================= */
+    /* 6. justify-items / align-items (칸 안에서의 정렬) */
+    /* ============================================= */
+    .c-align {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        height: 100px;
+    }
+    .align-start  { justify-items: start; align-items: start; }
+    .align-center { justify-items: center; align-items: center; }
+    .align-end    { justify-items: end; align-items: end; }
+    .c-align .box { width: 60px; padding: 14px 0; }
+
+
+    /* ============================================= */
+    /* 7. 실전 예제 : 반응형 카드 그리드                  */
+    /* ============================================= */
+    .practice {
+        display: grid;
+
+        /* auto-fit + minmax 조합 -> 화면 크기에 따라
+           칸 수가 자동으로 늘어나거나 줄어듦 */
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+    }
+    .practice .box { padding: 20px 0; }
+</style>
+</head>
+<body>
+
+<h1>📐 CSS Grid 완전 정리</h1>
+<p class="intro">
+    이 파일 하나만 봐도 Grid의 핵심 속성을 모두 이해할 수 있도록
+    "코드 + 결과 화면"을 함께 보여줍니다.<br>
+    Grid는 <b>display: grid</b>를 부모(container)에 적용해 행(row)과 열(column)을
+    동시에 짜는 2차원 레이아웃 방식입니다.
+</p>
+
+<!-- 1. grid-template-columns / rows -->
+<div class="demo">
+    <h2>1. grid-template-columns / rows — 격자 만들기</h2>
+    <p class="desc">몇 개의 열(세로줄)과 행(가로줄)을 만들지, 각 칸의 크기를 정합니다.</p>
+
+    <div class="code">.container { <span class="prop">display</span>: grid; <span class="prop">grid-template-columns</span>: <span class="val">1fr 1fr 1fr</span>; }</div>
+    <div class="container c-basic">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+        <div class="box">4</div><div class="box">5</div><div class="box">6</div>
+    </div>
+
+    <div class="code">.container { <span class="prop">grid-template-rows</span>: <span class="val">60px 60px</span>; } <span style="color:#888">/* 행 높이 직접 지정 */</span></div>
+    <div class="container c-rows">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+        <div class="box">4</div><div class="box">5</div><div class="box">6</div>
+    </div>
+</div>
+
+<!-- 2. repeat -->
+<div class="demo">
+    <h2>2. repeat() — 반복되는 열을 간단하게 표현</h2>
+    <p class="desc"><b>1fr 1fr 1fr 1fr</b> 대신 <b>repeat(4, 1fr)</b>로 줄여서 쓸 수 있습니다.</p>
+
+    <div class="code">.container { <span class="prop">grid-template-columns</span>: <span class="val">repeat(4, 1fr)</span>; }</div>
+    <div class="container c-repeat">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div><div class="box">4</div>
+    </div>
+</div>
+
+<!-- 3. 비율이 다른 열 -->
+<div class="demo">
+    <h2>3. fr 단위로 비율 다르게 주기</h2>
+    <p class="desc">fr은 "남는 공간을 나누는 비율" 단위입니다. 1fr : 2fr : 1fr이면 가운데가 2배 넓어집니다.</p>
+
+    <div class="code">.container { <span class="prop">grid-template-columns</span>: <span class="val">1fr 2fr 1fr</span>; }</div>
+    <div class="container c-fr">
+        <div class="box">1fr</div><div class="box">2fr (2배 넓음)</div><div class="box">1fr</div>
+    </div>
+</div>
+
+<!-- 4. grid-column / row span -->
+<div class="demo">
+    <h2>4. grid-column / grid-row — 여러 칸 병합하기</h2>
+    <p class="desc">특정 요소가 가로 또는 세로로 몇 칸을 차지할지 직접 지정할 수 있습니다.</p>
+
+    <div class="code">.box1 { <span class="prop">grid-column</span>: <span class="val">span 2</span>; } <span style="color:#888">/* 가로 2칸 차지 */</span>
+.box2 { <span class="prop">grid-row</span>: <span class="val">span 2</span>; } <span style="color:#888">/* 세로 2칸 차지 */</span></div>
+    <div class="container c-span">
+        <div class="box span-2col">가로 2칸 (span 2)</div>
+        <div class="box">2</div>
+        <div class="box span-2row">세로 2칸<br>(span 2)</div>
+        <div class="box">4</div>
+        <div class="box">5</div>
+        <div class="box">6</div>
+    </div>
+</div>
+
+<!-- 5. grid-template-areas -->
+<div class="demo">
+    <h2>5. grid-template-areas — 이름으로 레이아웃 그리기</h2>
+    <p class="desc">실제 페이지 레이아웃(헤더/사이드바/본문/푸터)을 만들 때 가장 직관적인 방법입니다.</p>
+
+    <div class="code">.container {
+  <span class="prop">grid-template-areas</span>:
+    <span class="val">"header header"</span>
+    <span class="val">"sidebar main"</span>
+    <span class="val">"footer footer"</span>;
+}
+.header  { <span class="prop">grid-area</span>: <span class="val">header</span>; }
+.sidebar { <span class="prop">grid-area</span>: <span class="val">sidebar</span>; }</div>
+    <div class="container c-area">
+        <div class="box area-header">header</div>
+        <div class="box area-sidebar">sidebar</div>
+        <div class="box area-main">main</div>
+        <div class="box area-footer">footer</div>
+    </div>
+</div>
+
+<!-- 6. justify-items / align-items -->
+<div class="demo">
+    <h2>6. justify-items / align-items — 칸 안에서 아이템 위치</h2>
+    <p class="desc">각 칸(grid cell) 안에서 아이템을 어디에 둘지 정합니다.</p>
+
+    <div class="label">start (칸의 왼쪽 위)</div>
+    <div class="container c-align align-start">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+
+    <div class="label">center (칸의 정중앙)</div>
+    <div class="container c-align align-center">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+
+    <div class="label">end (칸의 오른쪽 아래)</div>
+    <div class="container c-align align-end">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div>
+    </div>
+</div>
+
+<!-- 7. 실전 예제 -->
+<div class="demo">
+    <h2>7. 실전 예제 — auto-fit + minmax 반응형 카드</h2>
+    <p class="desc">미디어쿼리 없이도 화면 크기에 맞춰 칸 수가 자동으로 조절됩니다. (브라우저 창 크기를 줄여보세요)</p>
+
+    <div class="code">.container { <span class="prop">grid-template-columns</span>: <span class="val">repeat(auto-fit, minmax(140px, 1fr))</span>; }</div>
+    <div class="container practice">
+        <div class="box">카드 1</div>
+        <div class="box">카드 2</div>
+        <div class="box">카드 3</div>
+        <div class="box">카드 4</div>
+        <div class="box">카드 5</div>
+    </div>
+</div>
+
+</body>
+</html>
