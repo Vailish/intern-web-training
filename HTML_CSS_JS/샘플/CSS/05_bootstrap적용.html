@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!-- HTML5 문서임을 브라우저에 알려줍니다. -->
+
+<html lang="ko">
+<head>
+    <!-- 한글이 깨지지 않도록 문자 인코딩을 설정합니다. -->
+    <meta charset="UTF-8">
+
+    <!-- 반응형 웹에서 사용하는 설정입니다. (Bootstrap 필수) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 브라우저 탭에 표시되는 제목입니다. -->
+    <title>자기소개 페이지 (Bootstrap 적용)</title>
+
+    <!-- ============================================= -->
+    <!-- Bootstrap CSS를 CDN으로 불러옵니다.           -->
+    <!-- 직접 CSS를 작성하지 않아도                    -->
+    <!-- class 이름만으로 디자인이 적용됩니다.         -->
+    <!-- ============================================= -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Bootstrap JS : 햄버거 메뉴(navbar 토글) 같은 동작에 필요합니다. -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+        integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <!-- ===================================================== -->
+    <!-- Header : 사이트 상단                                  -->
+    <!-- 기존의 <nav> 링크를 Bootstrap의 navbar 컴포넌트로     -->
+    <!-- 바꿨습니다. 화면이 좁아지면 햄버거 메뉴로 변합니다.   -->
+    <!-- ===================================================== -->
+    <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <div class="container">
+
+            <!-- navbar-brand : 사이트 로고(제목) 자리 -->
+            <a class="navbar-brand fw-bold" href="#">김철수의 자기소개</a>
+
+            <!-- 화면이 좁을 때 나타나는 햄버거 버튼 (Bootstrap JS 필요) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="메뉴 열기">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- 메뉴 목록 : 기존 <a> | <a> 구조를 nav-link로 변경 -->
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">소개</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skill">기술</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">연락처</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===================================================== -->
+    <!-- 인사말 영역 (Hero)                                    -->
+    <!-- bg-body-tertiary : 옅은 배경색                        -->
+    <!-- py-5 : 위아래 여백(padding),  text-center : 가운데 정렬 -->
+    <!-- ===================================================== -->
+    <header class="bg-body-tertiary text-center py-5">
+        <div class="container">
+            <!-- display-4 : 크고 강조된 제목,  fw-bold : 굵게 -->
+            <h1 class="display-4 fw-bold">김철수의 자기소개</h1>
+
+            <!-- lead : 본문보다 살짝 크고 부드러운 안내 문장 -->
+            <p class="lead text-secondary">안녕하세요. 웹 개발자를 꿈꾸고 있습니다.</p>
+        </div>
+    </header>
+
+    <!-- main : 페이지의 핵심 내용                          -->
+    <!-- container : 내용을 가운데로 모으고 좌우 여백을 만듭니다. -->
+    <!-- my-5 : 위아래 바깥 여백(margin)                     -->
+    <main class="container my-5">
+
+        <!-- ===================================================== -->
+        <!-- section : 하나의 주제                                 -->
+        <!-- row/col 그리드 : 사진과 글을 좌우로 배치합니다.       -->
+        <!-- 화면이 좁아지면(모바일) 자동으로 위아래로 쌓입니다.   -->
+        <!-- ===================================================== -->
+        <section id="about" class="mb-5">
+            <!-- border-bottom : 제목 아래 구분선 (기존 <hr> 역할) -->
+            <h2 class="border-bottom pb-2 mb-4">🙋 자기소개</h2>
+
+            <div class="row align-items-center g-4">
+                <div class="col-md-4 text-center">
+                    <!-- img-fluid : 반응형 이미지,  rounded-circle : 원형,  shadow : 그림자 -->
+                    <img src="profile.png"
+                         alt="프로필 사진"
+                         width="200"
+                         class="img-fluid rounded-circle shadow">
+                    <p class="text-secondary small mt-2">(AI로 생성한 이미지입니다.)</p>
+                </div>
+
+                <div class="col-md-8">
+                    <p class="fs-5">
+                        저는 웹 개발자가 되기 위해 공부하고 있습니다.
+                        HTML, CSS, JavaScript를 배우는 중입니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- 기술 스택 : <ul>을 list-group 컴포넌트로 변경         -->
+        <!-- badge : 항목 오른쪽에 붙는 작은 라벨                  -->
+        <!-- ===================================================== -->
+        <section id="skill" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">💻 기술 스택</h2>
+
+            <ul class="list-group shadow-sm">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    HTML
+                    <span class="badge text-bg-primary">학습 중</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    CSS
+                    <span class="badge text-bg-success">학습 중</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    JavaScript
+                    <span class="badge text-bg-warning">학습 중</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Java
+                    <span class="badge text-bg-danger">학습 중</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- 취미 : <ol>을 번호가 붙는 list-group으로 변경         -->
+        <!-- list-group-numbered : 자동으로 1, 2, 3 번호가 붙습니다. -->
+        <!-- ===================================================== -->
+        <section class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">🎯 취미</h2>
+
+            <ol class="list-group list-group-numbered shadow-sm">
+                <li class="list-group-item">게임</li>
+                <li class="list-group-item">운동</li>
+                <li class="list-group-item">영화 보기</li>
+            </ol>
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- 좋아하는 사이트 : 평범한 링크를 버튼 모양으로 변경    -->
+        <!-- btn btn-outline-primary : 테두리만 있는 파란 버튼     -->
+        <!-- ===================================================== -->
+        <section class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">📚 좋아하는 사이트</h2>
+
+            <!-- target="_blank" : 새 탭에서 열기 -->
+            <a href="https://developer.mozilla.org/"
+               target="_blank"
+               class="btn btn-outline-primary">
+                MDN 바로가기
+            </a>
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- article : 독립적인 하나의 콘텐츠                      -->
+        <!-- alert : 눈에 띄는 알림 상자 컴포넌트                  -->
+        <!-- ===================================================== -->
+        <article class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">📢 오늘의 한마디</h2>
+
+            <div class="alert alert-info fs-5 mb-0" role="alert">
+                "꾸준히 공부하면 반드시 성장합니다."
+            </div>
+        </article>
+
+        <!-- ===================================================== -->
+        <!-- form : 사용자 입력을 받는 영역                        -->
+        <!-- card : 테두리와 그림자가 있는 상자 컴포넌트           -->
+        <!-- form-label / form-control : Bootstrap 입력 폼 스타일  -->
+        <!-- ===================================================== -->
+        <section id="contact" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">📨 방명록</h2>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form>
+
+                        <!-- mb-3 : 입력 칸 사이의 아래 여백 (기존 <br> 역할) -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">이름</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                class="form-control"
+                                placeholder="이름을 입력하세요">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="message" class="form-label">내용</label>
+
+                            <textarea
+                                id="message"
+                                name="message"
+                                rows="5"
+                                class="form-control"
+                                placeholder="메시지를 입력하세요"></textarea>
+                        </div>
+
+                        <!-- btn btn-primary : 파란색 기본 버튼 -->
+                        <button type="submit" class="btn btn-primary">등록</button>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ===================================================== -->
+    <!-- footer : 페이지 하단                                  -->
+    <!-- bg-dark text-white : 어두운 배경에 흰 글씨            -->
+    <!-- ===================================================== -->
+    <footer class="bg-dark text-white text-center py-4">
+
+        <p class="mb-1">
+            © 2026 김철수
+        </p>
+
+        <p class="mb-0">
+            이메일 :
+            <!-- link-light : 어두운 배경에서 잘 보이는 밝은 링크 -->
+            <a href="mailto:test@test.com" class="link-light">
+                test@test.com
+            </a>
+        </p>
+
+    </footer>
+
+</body>
+</html>
