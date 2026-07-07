@@ -1,0 +1,1 @@
+[      82ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:8080/h2-console/login.jsp?jsessionid=e70c11d54f690b15ff3a466b8d85d696:0
