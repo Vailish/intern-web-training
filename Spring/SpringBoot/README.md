@@ -53,6 +53,7 @@ cd 샘플/intro
 
 ## 더 공부하고 싶다면
 
-- [점프 투 스프링부트](https://wikidocs.net/book/7601) — 게시판을 만들며 배우는 무료 온라인 책 (이 교육의 다음 단계로 추천)
+- [스프링부트 4 + JPA — H2에서 MySQL까지](../Database/README.md) — 이 교육의 공식 다음 단계. 수정·삭제까지 CRUD를 완성하고 MySQL로 전환합니다
+- [점프 투 스프링부트](https://wikidocs.net/book/7601) — 게시판을 만들며 배우는 무료 온라인 책
 - [스프링 공식 가이드](https://spring.io/guides) — 주제별 짧은 실습 가이드 (영어)
 - [전자정부 표준프레임워크 포털](https://www.egovframe.go.kr/home/main.do) — 실무 투입 전 참고

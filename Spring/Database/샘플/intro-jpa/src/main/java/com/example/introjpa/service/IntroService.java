@@ -1,0 +1,71 @@
+package com.example.introjpa.service;
+
+import com.example.introjpa.domain.Intro;
+import com.example.introjpa.repository.IntroRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * 업무 규칙(비즈니스 로직)을 담당하는 서비스(Service) 계층입니다.
+ * - @Service : "이 클래스를 빈(Bean)으로 등록해 관리해 줘"라고 스프링에게 알리는 표식
+ * - 컨트롤러는 요청을 받기만 하고, 실제 일 처리는 여기서 합니다.
+ */
+@Service
+public class IntroService {
+
+    private final IntroRepository introRepository;
+
+    /**
+     * 생성자 주입(DI): 스프링이 IntroRepository 빈을 자동으로 넣어줍니다.
+     * new IntroRepository() 라고 직접 만들지 않는 것이 핵심입니다.
+     */
+    public IntroService(IntroRepository introRepository) {
+        this.introRepository = introRepository;
+    }
+
+    /** [R] 자기소개서 전체 목록을 최신 글이 위로 오도록 조회합니다. */
+    public List<Intro> findAll() {
+        return introRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }
+
+    /** [R] id로 자기소개서 한 건을 조회합니다. 없으면 예외를 던집니다. */
+    public Intro findById(Long id) {
+        return introRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 자기소개서입니다. id=" + id));
+    }
+
+    /** [C] 새 자기소개서를 저장합니다. 작성 시각은 서버가 기록합니다. */
+    public Intro create(String name, String title, String content) {
+        Intro intro = new Intro();
+        intro.setName(name);
+        intro.setTitle(title);
+        intro.setContent(content);
+        intro.setCreatedAt(LocalDateTime.now());
+        return introRepository.save(intro); // 이 한 줄이 INSERT문으로 번역됩니다.
+    }
+
+    /**
+     * [U] 자기소개서를 수정합니다.
+     *
+     * save()를 다시 부르지 않는 것에 주목!
+     * @Transactional 안에서 조회한 엔티티는 JPA가 감시하고 있다가,
+     * 값이 바뀐 채로 메서드가 끝나면 UPDATE문을 자동으로 실행합니다.
+     * 이것을 "변경 감지(Dirty Checking)"라고 부릅니다.
+     * (JDBC 실습에서 직접 하던 commit이 메서드 끝에서 자동으로 일어납니다.)
+     */
+    @Transactional
+    public void update(Long id, String name, String title, String content) {
+        Intro intro = findById(id);   // 1. 조회하고
+        intro.setName(name);          // 2. 값만 바꾸면
+        intro.setTitle(title);
+        intro.setContent(content);    // 3. 메서드가 끝날 때 UPDATE가 나갑니다.
+    }
+
+    /** [D] id로 자기소개서를 삭제합니다. */
+    public void delete(Long id) {
+        introRepository.deleteById(id); // 이 한 줄이 DELETE문으로 번역됩니다.
+    }
+}
