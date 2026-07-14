@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  IntroMapper 인터페이스의 "SQL 본체"입니다.
+  - namespace : 어느 매퍼 인터페이스의 SQL인지 (풀 패키지 경로로 연결)
+  - 각 태그의 id : 인터페이스의 메서드 이름과 정확히 일치해야 합니다
+  - #{...} : JDBC 실습에서 배운 PreparedStatement의 ? 와 같은 안전한 바인딩
+  여기 있는 SQL은 DB 교육(03_SQL_기초)에서 직접 쓰던 그 SQL 그대로입니다.
+-->
+<mapper namespace="com.example.intromybatis.mapper.IntroMapper">
+
+    <!-- [R] 전체 목록: 최신 글이 위로. 정렬도 SQL에 직접 씁니다. -->
+    <select id="findAll" resultType="com.example.intromybatis.domain.Intro">
+        SELECT id, name, title, content, created_at
+        FROM intro
+        ORDER BY id DESC
+    </select>
+
+    <!-- [R] 한 건 조회 -->
+    <select id="findById" resultType="com.example.intromybatis.domain.Intro">
+        SELECT id, name, title, content, created_at
+        FROM intro
+        WHERE id = #{id}
+    </select>
+
+    <!-- [C] 저장
+         useGeneratedKeys : DB가 매긴 AUTO_INCREMENT 번호를 돌려받아
+         keyProperty      : intro 객체의 id 필드에 채워 줍니다.
+         (JDBC 실습의 RETURN_GENERATED_KEYS와 같은 기능!) -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO intro (name, title, content, created_at)
+        VALUES (#{name}, #{title}, #{content}, #{createdAt})
+    </insert>
+
+    <!-- [U] 수정: MyBatis에는 변경 감지가 없으므로 UPDATE문을 직접 씁니다. -->
+    <update id="update">
+        UPDATE intro
+        SET name = #{name},
+            title = #{title},
+            content = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <!-- [D] 삭제 -->
+    <delete id="deleteById">
+        DELETE FROM intro
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
