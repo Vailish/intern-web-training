@@ -66,3 +66,10 @@ cd 샘플/intro-jpa        # 또는 샘플/intro-mybatis
 - `save()` 없이 값만 바꿔도 UPDATE가 나가는 **변경 감지(Dirty Checking)** 를 설명할 수 있습니다.
 - **프로필** 하나로 개발 DB와 운영 DB를 갈아끼우는 방법을 알게 됩니다 — eGovFrame 실무에서 개발/운영 설정을 나누는 것과 같은 원리입니다.
 - JPA와 MyBatis의 차이를 설명할 수 있고, **회사 실무 코드(MyBatis 매퍼 XML)를 읽을 수 있게** 됩니다.
+
+---
+
+## 다음 과정
+
+여기까지 만든 intro-jpa를 **프론트엔드(React)와 백엔드(REST API)로 분리**해 봅니다.
+→ [프론트엔드/백엔드 분리 교육](../Front-Back/README.md)

@@ -1,0 +1,22 @@
+/*
+ * 앱 전체에 적용되는 CSS입니다. (main.jsx에서 import './index.css'로 불러옴)
+ * 대부분의 스타일은 Bootstrap(index.html에서 CDN으로 로드)이 담당하고,
+ * 여기에는 intro-jpa의 static/css/style.css에 있던 커스텀 스타일만 남겼습니다.
+ */
+
+/* 목록의 제목 링크 스타일 */
+.intro-link {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.intro-link:hover {
+    text-decoration: underline;
+}
+
+/* 자기소개 내용: 입력한 줄바꿈을 그대로 화면에 보여줍니다 */
+.content-box {
+    white-space: pre-line;
+    line-height: 1.8;
+    min-height: 200px;
+}
