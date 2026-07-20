@@ -1,6 +1,0 @@
-- generic [ref=f2e2]:
-  - heading "성장하는 개발자 김철수입니다" [level=1] [ref=f2e3]
-  - paragraph [ref=f2e4]: 김철수 · 2026-07-07 09:50
-  - generic [ref=f2e6]: 안녕하세요. 웹 개발자를 꿈꾸는 김철수입니다. HTML/CSS/JS로 자기소개 페이지를 만들어 GitHub Pages에 올려보았고, 지금은 스프링부트로 서버 개발을 배우고 있습니다. 작은 것이라도 매일 만들어 보며 성장하겠습니다.
-  - link "← 목록으로" [ref=f2e7] [cursor=pointer]:
-    - /url: /
