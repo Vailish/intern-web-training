@@ -1,0 +1,40 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.1.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// 웹 MVC 스타터. RestClient(외부 API 호출 도구)도 이 안의 spring-web에 들어 있습니다.
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	// 화면(HTML)을 서버가 직접 그리므로 Thymeleaf가 필요합니다.
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// 코드를 저장하면 서버가 자동 재시작 (개발 편의)
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	// DB가 없는 모듈입니다 — JPA/H2/MySQL 의존성이 하나도 없다는 점에 주목하세요.
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// 소스 파일을 UTF-8로 읽도록 지정 (Windows에서 한글 주석이 깨지는 것 방지)
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}
