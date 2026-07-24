@@ -1,0 +1,54 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.1.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+// JWT 라이브러리(jjwt) 버전. 세 조각(api/impl/jackson)의 버전을 맞춰야 합니다.
+ext {
+	jjwtVersion = '0.12.6'
+}
+
+dependencies {
+	// Spring Security: 인증/인가의 핵심
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// 웹(REST API). 스프링부트 4에서는 -web 이 아니라 -webmvc 입니다.
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	// 회원 정보를 DB에 저장/조회 (JPA)
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// JWT(JSON Web Token) 생성/검증 라이브러리 jjwt
+	//  - jjwt-api    : 우리가 코드에서 직접 사용하는 인터페이스
+	//  - jjwt-impl   : 실제 구현체 (런타임에만 필요)
+	//  - jjwt-jackson: 토큰의 JSON 부분을 다루는 도구 (런타임에만 필요)
+	implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+	runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+	runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// 소스 파일을 UTF-8로 읽도록 지정 (Windows에서 한글 주석이 깨지는 것 방지)
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}

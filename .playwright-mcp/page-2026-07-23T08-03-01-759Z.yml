@@ -1,0 +1,28 @@
+- generic [ref=e3]:
+  - heading "🪙 JWT 토큰 방식 로그인 데모" [level=1] [ref=e4]
+  - paragraph [ref=e5]: 아래 순서대로 눌러 보면 토큰이 어떻게 발급되고 쓰이는지 볼 수 있습니다.
+  - generic [ref=e6]:
+    - heading "1. 로그인 → 토큰 발급 (POST /api/auth/login)" [level=5] [ref=e7]
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: 아이디
+        - textbox [ref=e11]: admin
+      - generic [ref=e12]:
+        - generic [ref=e13]: 비밀번호
+        - textbox [ref=e14]: admin123
+      - button "로그인" [ref=e16] [cursor=pointer]
+    - text: "실습 계정: admin/admin123 (관리자), user/user123 (일반)"
+    - generic [ref=e17]: "HTTP 200 { \"token\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4NDc5Mzc3MSwiZXhwIjoxNzg0Nzk1NTcxfQ.VegG3r9MRs69UMwcNe1HzcJPdzsYBhcRyDzHE204SvMPXvLVSaYiYwBEzo0lFshHhNpTCMRB7Ztj6CowkAJPig\", \"role\": \"ADMIN\" }"
+    - generic [ref=e18]:
+      - strong [ref=e19]: "저장된 토큰:"
+      - text: "eyJhbGciOiJIUzUxMiJ9.eyJz... (payload: {\"sub\":\"admin\",\"role\":\"ADMIN\",\"iat\":1784793771,\"exp\":1784795571})"
+  - generic [ref=e20]:
+    - heading "2. 내 정보 조회 (GET /api/me) — 로그인만 하면 OK" [level=5] [ref=e21]
+    - button "/api/me 호출" [ref=e22] [cursor=pointer]
+    - generic [ref=e23]: "HTTP 200 { \"username\": \"admin\", \"role\": \"ROLE_ADMIN\" }"
+  - generic [ref=e24]:
+    - heading "3. 관리자 API (GET /api/admin/dashboard) — ADMIN 권한 필요" [level=5] [ref=e25]
+    - button "/api/admin/dashboard 호출" [active] [ref=e26] [cursor=pointer]
+    - generic [ref=e27]: "HTTP 200 { \"message\": \"admin 님, 여기는 관리자 전용 대시보드입니다.\" }"
+    - text: user 로 로그인한 뒤 호출하면 403(권한 없음)이 뜹니다.
+  - button "토큰 버리기(로그아웃)" [ref=e28] [cursor=pointer]

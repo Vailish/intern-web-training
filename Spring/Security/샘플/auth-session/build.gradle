@@ -1,0 +1,47 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.1.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Spring Security: 인증(로그인)과 인가(권한) 처리의 핵심
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// 웹(MVC). 스프링부트 4에서는 이름이 -web 이 아니라 -webmvc 입니다.
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	// 화면(로그인/회원가입 페이지 등)을 그리는 템플릿 엔진
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// 회원 정보를 DB에 저장/조회 (JPA)
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// 브라우저에서 회원 테이블을 눈으로 확인할 수 있는 H2 콘솔 (/h2-console)
+	implementation 'org.springframework.boot:spring-boot-h2console'
+	// 코드 저장 시 자동 재시작 (개발 편의)
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	// 개발용 인메모리 데이터베이스
+	runtimeOnly 'com.h2database:h2'
+	// 테스트에서 스프링 컨텍스트가 정상적으로 뜨는지 확인
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// 소스 파일을 UTF-8로 읽도록 지정 (Windows에서 한글 주석이 깨지는 것 방지)
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}

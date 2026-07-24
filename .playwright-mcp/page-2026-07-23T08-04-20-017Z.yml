@@ -1,0 +1,24 @@
+- generic [ref=f2e3]:
+  - heading "🔐 세션 방식 로그인 데모" [level=1] [ref=f2e4]
+  - generic [ref=f2e5]:
+    - strong [ref=f2e6]: admin
+    - text: 님으로 로그인되어 있습니다.
+  - generic [ref=f2e7]:
+    - link "마이페이지 (로그인 필요)" [ref=f2e8] [cursor=pointer]:
+      - /url: /mypage
+    - link "관리자 페이지 (ADMIN 전용)" [ref=f2e9] [cursor=pointer]:
+      - /url: /admin
+    - button "로그아웃" [ref=f2e11] [cursor=pointer]
+  - generic [ref=f2e13]:
+    - heading "실습 계정" [level=5] [ref=f2e14]
+    - list [ref=f2e15]:
+      - listitem [ref=f2e16]:
+        - code [ref=f2e17]: admin
+        - text: /
+        - code [ref=f2e18]: admin123
+        - text: → 관리자 (모든 페이지 접근)
+      - listitem [ref=f2e19]:
+        - code [ref=f2e20]: user
+        - text: /
+        - code [ref=f2e21]: user123
+        - text: → 일반 회원 (관리자 페이지 접근 시 거부)

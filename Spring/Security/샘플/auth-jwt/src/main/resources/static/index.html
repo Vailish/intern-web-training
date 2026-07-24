@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JWT 인증 데모</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        pre { background:#f8f9fa; padding:12px; border-radius:8px; white-space:pre-wrap; word-break:break-all; }
+        .step { border-left:4px solid #0d6efd; padding-left:12px; margin-bottom:24px; }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container" style="max-width: 760px;">
+    <div class="py-4">
+        <h1 class="mb-1">🪙 JWT 토큰 방식 로그인 데모</h1>
+        <p class="text-muted">아래 순서대로 눌러 보면 토큰이 어떻게 발급되고 쓰이는지 볼 수 있습니다.</p>
+
+        <!-- 1) 로그인 -->
+        <div class="step">
+            <h5>1. 로그인 → 토큰 발급 (POST /api/auth/login)</h5>
+            <div class="row g-2 align-items-end">
+                <div class="col"><label class="form-label">아이디</label>
+                    <input id="username" class="form-control" value="admin"></div>
+                <div class="col"><label class="form-label">비밀번호</label>
+                    <input id="password" type="password" class="form-control" value="admin123"></div>
+                <div class="col-auto"><button class="btn btn-primary" onclick="login()">로그인</button></div>
+            </div>
+            <small class="text-muted">실습 계정: admin/admin123 (관리자), user/user123 (일반)</small>
+            <pre id="loginResult" class="mt-2">아직 로그인하지 않음</pre>
+            <div><strong>저장된 토큰:</strong> <span id="tokenView" class="text-success">(없음)</span></div>
+        </div>
+
+        <!-- 2) 내 정보 -->
+        <div class="step">
+            <h5>2. 내 정보 조회 (GET /api/me) — 로그인만 하면 OK</h5>
+            <button class="btn btn-outline-primary" onclick="callApi('/api/me', 'meResult')">/api/me 호출</button>
+            <pre id="meResult" class="mt-2">-</pre>
+        </div>
+
+        <!-- 3) 관리자 API -->
+        <div class="step">
+            <h5>3. 관리자 API (GET /api/admin/dashboard) — ADMIN 권한 필요</h5>
+            <button class="btn btn-outline-warning" onclick="callApi('/api/admin/dashboard', 'adminResult')">/api/admin/dashboard 호출</button>
+            <pre id="adminResult" class="mt-2">-</pre>
+            <small class="text-muted">user 로 로그인한 뒤 호출하면 403(권한 없음)이 뜹니다.</small>
+        </div>
+
+        <button class="btn btn-outline-danger btn-sm" onclick="logout()">토큰 버리기(로그아웃)</button>
+    </div>
+</div>
+
+<script>
+    // 세션 방식과의 결정적 차이: 브라우저(클라이언트)가 토큰을 직접 보관합니다.
+    // 여기서는 간단히 변수에 담지만, 실제로는 보통 localStorage 등에 저장합니다.
+    let token = null;
+
+    async function login() {
+        const body = {
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value
+        };
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        document.getElementById('loginResult').textContent =
+            `HTTP ${res.status}\n` + JSON.stringify(data, null, 2);
+
+        if (res.ok) {
+            token = data.token;
+            // 토큰의 payload(가운데 조각)는 Base64라 누구나 열어 볼 수 있습니다 — 확인용으로 디코드해 표시.
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            document.getElementById('tokenView').textContent =
+                token.substring(0, 25) + '...  (payload: ' + JSON.stringify(payload) + ')';
+        }
+    }
+
+    async function callApi(path, targetId) {
+        // 핵심: 보호된 API 를 부를 때는 Authorization 헤더에 토큰을 실어 보냅니다.
+        const res = await fetch(path, {
+            headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+        });
+        const text = await res.text();
+        let pretty = text;
+        try { pretty = JSON.stringify(JSON.parse(text), null, 2); } catch (e) {}
+        document.getElementById(targetId).textContent = `HTTP ${res.status}\n` + pretty;
+    }
+
+    function logout() {
+        token = null;
+        document.getElementById('tokenView').textContent = '(없음)';
+        document.getElementById('loginResult').textContent = '토큰을 버렸습니다. 이제 보호된 API 는 401 이 뜹니다.';
+    }
+</script>
+</body>
+</html>

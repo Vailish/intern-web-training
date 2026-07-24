@@ -1,0 +1,49 @@
+- generic [ref=e3]:
+  - heading "🔁 JWT + 리프레시 토큰 데모" [level=1] [ref=e4]
+  - paragraph [ref=e5]:
+    - text: 액세스 토큰은
+    - strong [ref=e6]: 60초
+    - text: 후 만료됩니다. 만료 후
+    - code [ref=e7]: /api/me
+    - text: 를 부르면 401이 뜨고,
+    - strong [ref=e8]: 리프레시
+    - text: 하면 다시 됩니다.
+  - generic [ref=e10]:
+    - generic [ref=e11]:
+      - strong [ref=e12]: "액세스 토큰:"
+      - text: eyJhbGciOiJIUzUxMiJ9.eyJqdGkiO...
+    - generic [ref=e13]:
+      - strong [ref=e14]: "리프레시 토큰:"
+      - text: 48310a91-0bf3-4428-a31b-754f1c0c75dc
+    - generic [ref=e44]: "액세스 토큰 payload: {\"jti\":\"44c36abe-05bd-4ddf-bd38-ac755ee91285\",\"sub\":\"admin\",\"role\":\"ADMIN\",\"iat\":1784795083,\"exp\":1784795143} (만료까지 약 55초)"
+  - generic [ref=e15]:
+    - heading "1. 로그인 → 토큰 2종 발급 (POST /api/auth/login)" [level=5] [ref=e16]
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]: 아이디
+        - textbox [ref=e20]: admin
+      - generic [ref=e21]:
+        - generic [ref=e22]: 비밀번호
+        - textbox [ref=e23]: admin123
+      - button "로그인" [ref=e25] [cursor=pointer]
+    - text: admin/admin123 (관리자), user/user123 (일반)
+    - generic [ref=e26]: "HTTP 200 { \"accessToken\": \"eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0NGMzNmFiZS0wNWJkLTRkZGYtYmQzOC1hYzc1NWVlOTEyODUiLCJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4NDc5NTA4MywiZXhwIjoxNzg0Nzk1MTQzfQ.3I0mWKFKYtvs25YffCmWoli_KLtDfsvZ1rwnSt9mafUPa_g1QyKV85y2OtRVxkRt5wC9ZUzZSAjoy-OLTVrBMg\", \"refreshToken\": \"48310a91-0bf3-4428-a31b-754f1c0c75dc\", \"role\": \"ADMIN\" }"
+  - generic [ref=e27]:
+    - heading "2. 보호된 API 호출 (액세스 토큰 사용)" [level=5] [ref=e28]
+    - button "/api/me" [active] [ref=e29] [cursor=pointer]
+    - button "/api/admin/dashboard" [ref=e30] [cursor=pointer]
+    - generic [ref=e31]: 60초 지난 뒤 눌러 보면 액세스 토큰이 만료되어 401이 뜹니다.
+    - generic [ref=e32]: "HTTP 200 { \"username\": \"admin\", \"role\": \"ROLE_ADMIN\" }"
+  - generic [ref=e33]:
+    - heading "3. 액세스 토큰 재발급 (POST /api/auth/refresh)" [level=5] [ref=e34]
+    - button "리프레시 (재로그인 없이 갱신)" [ref=e35] [cursor=pointer]
+    - generic [ref=e36]:
+      - text: 리프레시 토큰도 새 것으로
+      - strong [ref=e37]: 회전
+      - text: 됩니다. 위의 토큰 값이 바뀌는 것을 보세요.
+    - generic [ref=e38]: "-"
+  - generic [ref=e39]:
+    - heading "4. 로그아웃 (POST /api/auth/logout)" [level=5] [ref=e40]
+    - button "로그아웃 (리프레시 토큰 폐기)" [ref=e41] [cursor=pointer]
+    - generic [ref=e42]: 폐기 후 다시 리프레시를 누르면 401 이 뜹니다(회전/재사용 감지).
+    - generic [ref=e43]: "-"
