@@ -1,0 +1,54 @@
+# =========================================================
+#  CD (지속적 배포) — main 에 push 되면 EC2 서버에 자동 배포하는 "템플릿"
+#  ⚠️ 이 파일은 예시입니다. 그대로는 동작하지 않으며, 아래 값들을 여러분 환경에 맞게
+#     채우고 GitHub Secrets 를 등록해야 합니다. (README 의 AWS 배포 절 참고)
+#  경로:  .github/workflows/deploy.yml
+# =========================================================
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]     # main 에 반영될 때만 배포 (테스트 통과는 ci.yml 이 담당)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      # 1) 실행 가능한 jar 빌드
+      - name: Build jar
+        run: |
+          chmod +x gradlew
+          ./gradlew bootJar -x test --no-daemon
+
+      # 2) jar 를 EC2 서버로 복사하고 재시작 (SSH)
+      #    - 민감정보(호스트/키)는 코드에 쓰지 말고 GitHub Secrets 에 저장해 ${{ secrets.XXX }} 로 참조합니다.
+      #    - EC2에는 미리 systemd 서비스(예: myapp.service)를 등록해 두는 방식을 권장합니다.
+      - name: Deploy to EC2 over SSH
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "build/libs/*-SNAPSHOT.jar"
+          target: "/home/ubuntu/app/"
+          strip_components: 2
+
+      - name: Restart app on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo systemctl restart myapp
+            sleep 3
+            sudo systemctl status myapp --no-pager

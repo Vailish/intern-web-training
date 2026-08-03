@@ -1,0 +1,42 @@
+# =========================================================
+#  CI (지속적 통합) — push/PR 마다 자동으로 테스트를 돌립니다.
+#  이 파일을 여러분 저장소의  .github/workflows/ci.yml  경로에 두세요.
+#  (GitHub 이 이 위치를 자동으로 인식해 실행합니다.)
+# =========================================================
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # 1) 저장소 코드를 체크아웃
+      - uses: actions/checkout@v4
+
+      # 2) JDK 17 설치 + Gradle 의존성 캐시
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      # 3) gradlew 실행 권한 부여 (리눅스 러너)
+      - name: Grant execute permission
+        run: chmod +x gradlew
+
+      # 4) 테스트 실행 — Testing 모듈에서 만든 테스트들이 여기서 자동으로 돌아갑니다.
+      #    하나라도 실패하면 이 워크플로가 빨간불이 되어, 문제를 merge 전에 잡아냅니다.
+      - name: Run tests
+        run: ./gradlew test --no-daemon
+
+      # (참고) gradle 프로젝트가 저장소 루트가 아니라 하위 폴더에 있으면,
+      #  각 step 에  working-directory: 경로  를 추가하세요. 예:
+      #    - name: Run tests
+      #      working-directory: ./backend
+      #      run: ./gradlew test --no-daemon

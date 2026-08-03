@@ -1,0 +1,50 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.1.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-h2console'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// ===== 테스트 의존성 (이 모듈의 핵심) =====
+	// 스프링부트 4는 테스트 스타터가 기술별로 나뉘어 있습니다.
+	//  - data-jpa-test  : @DataJpaTest (리포지토리 슬라이스 테스트)
+	//  - webmvc-test    : @WebMvcTest + MockMvc (컨트롤러 슬라이스 테스트)
+	//  - thymeleaf-test : 뷰(타임리프) 렌더링 지원
+	// 이 스타터들이 JUnit5 · AssertJ · Mockito · @SpringBootTest 를 함께 가져옵니다.
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	// 순수 단위 테스트에서 Mockito 를 명시적으로 쓰기 위해 추가(교육 가독성 목적)
+	testImplementation 'org.mockito:mockito-junit-jupiter'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// 소스 파일을 UTF-8로 읽도록 지정 (Windows에서 한글 주석이 깨지는 것 방지)
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- xmlns:th : "이 문서에서 th: 로 시작하는 속성은 Thymeleaf 문법"이라는 선언 -->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자기소개서 목록</title>
+    <!-- 여러분이 배운 Bootstrap을 그대로 씁니다 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- static 폴더의 파일은 @{/...} 경로로 그대로 불러옵니다 -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container py-5">
+
+    <h1 class="mb-1">📋 인턴 자기소개서</h1>
+    <p class="text-secondary">우리 기수 인턴들의 자기소개서 모음입니다.</p>
+
+    <a class="btn btn-primary mb-3" th:href="@{/intro/new}">✏️ 자기소개서 작성</a>
+
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+        <tr>
+            <th scope="col" style="width: 80px">번호</th>
+            <th scope="col">제목</th>
+            <th scope="col" style="width: 120px">이름</th>
+            <th scope="col" style="width: 180px">작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- th:each : 컨트롤러가 Model에 담아 보낸 intros 목록을 한 줄씩 반복 -->
+        <tr th:each="intro : ${intros}">
+            <td th:text="${intro.id}">1</td>
+            <td>
+                <!-- @{/intro/{id}(id=...)} : /intro/3 같은 링크를 만들어 줍니다 -->
+                <a class="intro-link" th:href="@{/intro/{id}(id=${intro.id})}" th:text="${intro.title}">제목 예시</a>
+            </td>
+            <td th:text="${intro.name}">홍길동</td>
+            <td th:text="${#temporals.format(intro.createdAt, 'yyyy-MM-dd HH:mm')}">2026-07-06 10:00</td>
+        </tr>
+        <!-- 목록이 비어 있을 때만 보여주는 안내 행 -->
+        <tr th:if="${#lists.isEmpty(intros)}">
+            <td colspan="4" class="text-center text-secondary py-4">
+                아직 등록된 자기소개서가 없습니다. 첫 번째 작성자가 되어 보세요!
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

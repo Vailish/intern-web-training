@@ -1,0 +1,44 @@
+# =========================================================
+#  docker-compose — 스프링부트 앱 + MySQL 을 한 번에 실행
+#  로컬에서 "운영과 비슷한 환경"(앱 + 진짜 DB)을 재현할 때 씁니다.
+#  실행:  docker compose up --build
+#  종료:  docker compose down      (DB까지 지우려면 docker compose down -v)
+# =========================================================
+services:
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpw}
+      MYSQL_DATABASE: introdb
+      MYSQL_USER: intern
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-intern1234}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql          # 데이터를 컨테이너 밖에 보관 → 재시작해도 유지
+    healthcheck:                         # DB가 "정말 준비됐는지" 확인 (아래 depends_on 이 이걸 기다림)
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .                             # 같은 폴더의 Dockerfile 로 이미지 빌드
+    depends_on:
+      db:
+        condition: service_healthy       # ⭐ DB가 "healthy" 될 때까지 앱 시작을 미룸
+    environment:
+      SPRING_PROFILES_ACTIVE: mysql
+      # ⭐ 핵심: 접속 호스트는 localhost 가 아니라 "서비스 이름(db)" 입니다.
+      #         컨테이너끼리는 compose 가 만든 내부 네트워크에서 서비스 이름으로 통신합니다.
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/introdb
+      SPRING_DATASOURCE_USERNAME: intern
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-intern1234}
+      # 데모 편의를 위해 테이블 자동 생성. (실무는 validate + Flyway 같은 마이그레이션 도구를 씁니다)
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+
+volumes:
+  db-data:
