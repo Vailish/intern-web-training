@@ -1,0 +1,21 @@
+/*
+ * static 폴더의 파일은 서버가 가공 없이 "그대로" 브라우저에 전달합니다.
+ * (templates 폴더의 HTML과 다른 점! → 04 문서 A6)
+ */
+
+/* 목록의 제목 링크 스타일 */
+.intro-link {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.intro-link:hover {
+    text-decoration: underline;
+}
+
+/* 자기소개 내용: 입력한 줄바꿈을 그대로 화면에 보여줍니다 */
+.content-box {
+    white-space: pre-line;
+    line-height: 1.8;
+    min-height: 200px;
+}

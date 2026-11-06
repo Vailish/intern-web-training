@@ -41,5 +41,5 @@ HTML/CSS/JS로 화면을 만들 줄 알게 된 여러분이, 이제 **데이터�
 
 ## 더 보기
 
-- [데이터베이스 입문 참고자료 (PDF)](../99_참고자료/데이터베이스_입문_인턴초급개발자.pdf) — DB 종류(관계형/NoSQL/인메모리)와 트렌드 개관
+- [데이터베이스 입문 참고자료 (PDF)](../99_참고자료/03_데이터베이스/데이터베이스_입문_인턴초급개발자.pdf) — DB 종류(관계형/NoSQL/인메모리)와 트렌드 개관
 - [프로그래머스 SQL 고득점 Kit](https://school.programmers.co.kr/learn/challenges?tab=sql_practice_kit) — SQL 추가 연습

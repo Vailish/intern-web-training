@@ -1,0 +1,16 @@
+# docker build 때 Docker 엔진으로 보내지 않을 파일들 (빌드 속도↑, 민감정보 유출 방지)
+# 형식은 .gitignore 와 비슷합니다.
+
+# build 폴더는 통째로 제외하되, 단일 스테이지 Dockerfile이 복사할 jar(build/libs)만 살립니다.
+build/*
+!build/libs
+
+# Gradle 캐시, IDE 설정, 로컬 H2 DB 파일(개인 데이터!)은 이미지에 넣지 않습니다.
+.gradle/
+data/
+bin/
+out/
+.idea/
+.vscode/
+*.iml
+HELP.md

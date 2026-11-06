@@ -1,0 +1,10 @@
+# 멀티스테이지라 jar는 Docker 안에서 만듭니다 → 내 PC의 build 폴더는 통째로 제외
+build/
+.gradle/
+data/
+bin/
+out/
+.idea/
+.vscode/
+*.iml
+HELP.md

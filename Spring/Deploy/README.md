@@ -18,8 +18,10 @@
 완성 예시 파일: [샘플/](./샘플/) — `Dockerfile`, `.dockerignore`, `docker-compose.yml`, `github-workflows/`
 > 이 파일들을 여러분 프로젝트(예: 캡스톤) **루트**에 복사해 쓰세요. `github-workflows/` 안의 파일은 **`.github/workflows/`** 로 옮겨야 GitHub가 인식합니다.
 
+> 🧪 Docker를 직접 손으로 해 보지 않았다면 먼저 [06_Deploy 단계별 실습](../../06_Deploy/README.md)(H2 단일 컨테이너 → MySQL 컨테이너 2개 → compose)을 진행하세요.
+
 > 🔗 개념이 처음이라면 먼저 참고자료 PDF를 보세요:
-> [컨테이너·Docker·쿠버네티스 입문](../../99_참고자료/), [Dockerfile·docker-compose 실습](../../99_참고자료/)
+> [컨테이너·Docker·쿠버네티스 입문](../../99_참고자료/04_배포_인프라/컨테이너_Docker_쿠버네티스_입문_인턴초급개발자.pdf), [Dockerfile·docker-compose 실습](../../99_참고자료/04_배포_인프라/Dockerfile_docker-compose_스프링부트_인턴초급개발자.pdf)
 
 ---
 
@@ -137,4 +139,4 @@ docker compose down            # 종료  (-v 를 붙이면 DB 데이터까지 �
 ## 🏢 실무(eGovFrame) 연결 포인트
 공공/SI도 온프레미스에서 **클라우드(SaaS) 전환**이 진행 중이라, 컨테이너·CI/CD 이해의 가치가 커지고 있습니다.
 전통적으로는 **WAR를 외장 톰캣/WAS에 배포**하지만, 원리(빌드 산출물 → 서버에 올려 실행 → 재시작)는 동일합니다.
-(스프링부트 내장 톰캣 vs 외장 WAS 차이는 [참고자료: 웹서버·WAS 동작원리](../../99_참고자료/) 참고)
+(스프링부트 내장 톰캣 vs 외장 WAS 차이는 [참고자료: 웹서버·WAS 동작원리](../../99_참고자료/02_웹_백엔드/웹서버_WAS_동작원리_인턴초급개발자.pdf) 참고)

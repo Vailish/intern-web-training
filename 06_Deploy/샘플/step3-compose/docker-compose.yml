@@ -1,0 +1,64 @@
+# =========================================================
+#  [STEP 3] docker compose — STEP 2 의 앱 + DB 를 "파일 하나"로 한 번에 실행
+#
+#  STEP 2 에서 손으로 친 명령들이 전부 이 파일 안으로 들어왔습니다.
+#    docker network create intro-net         →  compose 가 자동으로 네트워크 생성
+#    docker build -t intro-db:1.0 ...        →  services.db.build
+#    docker run ... intro-db:1.0             →  services.db
+#    docker build -t intro-app:1.0 ...       →  services.app.build
+#    docker run ... -e DB_HOST=intro-db ...  →  services.app (DB_HOST 는 서비스 이름 db)
+#
+#  준비:  .env.example 을 복사해 .env 를 만들고 비밀번호를 채웁니다.
+#  실행:  docker compose up -d --build
+#  확인:  docker compose ps   /   docker compose logs -f app
+#  종료:  docker compose down        (DB 데이터까지 지우려면 docker compose down -v)
+# =========================================================
+
+# 프로젝트 이름. 컨테이너·네트워크·볼륨 이름 앞에 붙습니다. (예: intro-stack-db-1)
+name: intro-stack
+
+services:
+
+  # ---------------- DB (MySQL) ----------------
+  db:
+    build: ../step2-mysql/db             # STEP 2 의 DB Dockerfile 을 그대로 사용
+    image: intro-db:1.0                  # 빌드한 이미지에 붙일 이름
+    environment:
+      # ${변수:?메시지} = .env 에 값이 없으면 메시지를 출력하고 실행을 멈춥니다. (비밀번호 누락 방지)
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?.env 파일에 MYSQL_ROOT_PASSWORD 를 설정하세요}
+      MYSQL_USER: ${MYSQL_USER:-intro}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?.env 파일에 MYSQL_PASSWORD 를 설정하세요}
+    volumes:
+      - mysql-data:/var/lib/mysql          # DB 파일을 볼륨에 보관 → 컨테이너를 지워도 데이터 유지
+    # ports 를 열지 않았습니다! 앱은 내부 네트워크로 접속하므로 DB를 PC 밖으로 노출할 필요가 없습니다.
+    # Workbench 로 직접 보고 싶을 때만 아래 주석을 푸세요. (PC에 설치된 MySQL과 겹치지 않게 3307 사용)
+    # ports:
+    #   - "3307:3306"
+    healthcheck:
+      # "DB가 정말 접속을 받을 준비가 됐는지" 5초마다 검사합니다.
+      # ⚠️ -h 127.0.0.1 (TCP) 이 중요: MySQL 은 첫 시작 때 초기화용 임시 서버를 잠깐 띄우는데,
+      #    localhost(소켓)로 검사하면 그 임시 서버에도 "살아있음"이 떠서 앱이 너무 일찍 출발합니다.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 20s
+
+  # ---------------- 앱 (스프링부트) ----------------
+  app:
+    build: ../step2-mysql/app            # STEP 2 의 앱 Dockerfile 을 그대로 사용 (코드 수정 없음!)
+    image: intro-app:1.0
+    depends_on:
+      db:
+        condition: service_healthy       # ⭐ DB healthcheck 가 통과(healthy)한 뒤에 앱을 시작
+    environment:
+      # ⭐ 핵심: 접속 호스트 = "서비스 이름 db". compose 네트워크 안에서는 서비스 이름이 곧 주소입니다.
+      DB_HOST: db
+      DB_USERNAME: ${MYSQL_USER:-intro}
+      DB_PASSWORD: ${MYSQL_PASSWORD:?.env 파일에 MYSQL_PASSWORD 를 설정하세요}
+    ports:
+      - "8080:8080"                      # 브라우저(내 PC) → 앱 컨테이너
+    restart: on-failure                  # 앱이 에러로 죽으면 자동 재시작 (일시적인 DB 연결 실패 대비)
+
+volumes:
+  mysql-data:

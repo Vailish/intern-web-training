@@ -1,0 +1,10 @@
+# intro 서비스용 MySQL 설정 (Dockerfile 이 /etc/mysql/conf.d/ 로 복사합니다)
+[mysqld]
+# 한글·이모지까지 저장할 수 있는 문자셋
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+# 한국 시간(KST)
+default-time-zone='+09:00'
+
+[client]
+default-character-set=utf8mb4
