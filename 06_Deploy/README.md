@@ -11,6 +11,9 @@ STEP 2  [ 앱 ] ──intro-net──▶ [ MySQL ]    컨테이너 2개      이
            │  손으로 친 명령을 파일 하나로
            ▼
 STEP 3  docker-compose.yml                 컨테이너 2개      docker compose up 한 줄
+           │  만든 이미지를 남에게 전달
+           ▼
+STEP 4  내 PC ──push──▶ Docker Hub ──pull──▶ 다른 PC   소스 없이 이미지로만 실행
 ```
 
 > 💡 **왜 배우나?** 신입 채용공고에서 Docker는 대표적인 **우대 사항**입니다.
@@ -25,8 +28,9 @@ STEP 3  docker-compose.yml                 컨테이너 2개      docker compose
 | 1 | [STEP 1 — H2 앱 하나를 컨테이너로](./01_STEP1_H2_단일컨테이너.md) | Dockerfile 작성, `docker build`/`run`, 포트 매핑, 볼륨, 멀티스테이지 | 1~1.5시간 |
 | 2 | [STEP 2 — MySQL로 바꾸고 컨테이너 2개 통신시키기](./02_STEP2_MySQL_컨테이너간_통신.md) | 설정 외부화(환경변수), DB 이미지 빌드, **사용자 정의 네트워크**, 컨테이너 간 통신 | 1.5~2시간 |
 | 3 | [STEP 3 — docker compose로 한 번에 올리기](./03_STEP3_docker_compose.md) | `docker-compose.yml`, `.env`, healthcheck, `depends_on` | 1시간 |
+| 4 | [STEP 4 — Docker Hub에 올리고 받아서 실행하기](./04_STEP4_DockerHub_이미지_배포와_실행.md) | 레지스트리, `tag`/`push`/`pull`, 태그 버전 관리·롤백, 이미지 보안, CPU 아키텍처 | 1~1.5시간 |
 
-**반드시 순서대로** 진행하세요. STEP 2·3은 앞 단계에서 손으로 해 본 일을 "자동화"하는 구조라, 건너뛰면 compose가 무엇을 대신해 주는지 보이지 않습니다.
+**반드시 순서대로** 진행하세요. STEP 4는 Docker Hub 계정이 필요합니다(무료). 계정이 없으면 문서 8장의 **로컬 레지스트리**로 같은 실습을 할 수 있습니다. STEP 2·3은 앞 단계에서 손으로 해 본 일을 "자동화"하는 구조라, 건너뛰면 compose가 무엇을 대신해 주는지 보이지 않습니다.
 
 ---
 
@@ -67,6 +71,7 @@ STEP 3  docker-compose.yml                 컨테이너 2개      docker compose
 ├─ 01_STEP1_H2_단일컨테이너.md
 ├─ 02_STEP2_MySQL_컨테이너간_통신.md
 ├─ 03_STEP3_docker_compose.md
+├─ 04_STEP4_DockerHub_이미지_배포와_실행.md
 └─ 샘플/
    ├─ step1-h2/                       ← 원본 intro 프로젝트 + Dockerfile (DB 설정은 원본과 동일)
    │  ├─ Dockerfile                   ← 기본: 내 PC에서 만든 jar를 복사
@@ -75,15 +80,21 @@ STEP 3  docker-compose.yml                 컨테이너 2개      docker compose
    ├─ step2-mysql/
    │  ├─ app/                         ← intro 프로젝트를 MySQL용으로 수정 + Dockerfile(멀티스테이지)
    │  └─ db/                          ← MySQL 이미지용 Dockerfile + 설정(conf/intro.cnf)
-   └─ step3-compose/
-      ├─ docker-compose.yml           ← step2-mysql 의 app, db 를 그대로 가져다 씀
-      ├─ .env.example                 ← 비밀번호 예시 (복사해서 .env 로 사용)
-      └─ .gitignore                   ← .env 를 Git 에서 제외
+   ├─ step3-compose/
+   │  ├─ docker-compose.yml           ← step2-mysql 의 app, db 를 그대로 가져다 씀
+   │  ├─ .env.example                 ← 비밀번호 예시 (복사해서 .env 로 사용)
+   │  └─ .gitignore                   ← .env 를 Git 에서 제외
+   └─ step4-dockerhub/                ← 소스코드 없음! 이미지를 받아서 실행만
+      ├─ docker-compose.yml           ← build 없이 image: ${DOCKERHUB_USER}/intro-app:${APP_TAG}
+      ├─ .env.example                 ← Docker Hub 사용자명·태그·비밀번호 견본
+      └─ .gitignore
 ```
 
 ---
 
-## 세 단계 한눈에 비교
+## STEP 1~3 한눈에 비교
+
+> STEP 4는 앱·DB 구성은 STEP 3과 같고 **이미지를 어디서 가져오느냐**만 다릅니다 → [STEP 4 문서 10장](./04_STEP4_DockerHub_이미지_배포와_실행.md#10-마무리) 비교표 참고
 
 | 구분 | STEP 1 | STEP 2 | STEP 3 |
 |---|---|---|---|
@@ -112,6 +123,12 @@ docker volume ls  /  docker network ls          # 볼륨 / 네트워크 목록
 docker compose up -d --build           # (STEP 3) 빌드 + 전체 실행
 docker compose ps  /  docker compose logs -f app
 docker compose down   /  docker compose down -v # 종료 / 종료 + 볼륨 삭제
+
+docker login -u 사용자명               # (STEP 4) 비밀번호 대신 액세스 토큰 입력
+docker tag 이미지:태그 사용자명/이미지:태그   # Docker Hub용 이름표 붙이기 (복사 아님)
+docker push 사용자명/이미지:태그       # 올리기
+docker pull 사용자명/이미지:태그       # 받기  (compose 는 docker compose pull)
+docker logout                          # 공용 PC 라면 꼭
 ```
 
 ---
@@ -123,6 +140,7 @@ docker rm -f intro-h2 intro-app intro-db           # STEP 1·2 컨테이너 (없
 docker network rm intro-net
 docker volume rm intro-h2-data intro-mysql-data
 cd 샘플\step3-compose; docker compose down -v      # STEP 3
+cd ..\step4-dockerhub; docker compose down -v      # STEP 4 (이미지 정리는 STEP 4 문서 '청소' 참고)
 docker rmi intro-h2:1.0 intro-h2:multi intro-app:1.0 intro-db:1.0   # 이미지까지 지우려면
 ```
 
@@ -145,6 +163,7 @@ docker rmi intro-h2:1.0 intro-h2:multi intro-app:1.0 intro-db:1.0   # 이미지�
 
 ## 다음 단계
 
+- [07_Network](../07_Network/README.md) — 이 실습에서 겪은 `localhost`, 포트, 컨테이너 이름, `Communications link failure` 를 네트워크 개념(IP·DNS·TCP)으로 풀어 봅니다
 - [Spring/Deploy](../Spring/Deploy/README.md) — GitHub Actions로 **자동 테스트(CI)·자동 배포(CD)**, AWS EC2 + RDS 배포 개요
 - [Dockerfile·docker-compose 실습 PDF](../99_참고자료/04_배포_인프라/Dockerfile_docker-compose_스프링부트_인턴초급개발자.pdf) — Dockerfile 지시어와 compose 키 총정리표
 
@@ -153,3 +172,7 @@ docker rmi intro-h2:1.0 intro-h2:multi intro-app:1.0 intro-db:1.0   # 이미지�
 > ✅ **검증 기록 (2026-11-06)**: Windows 11 + Docker 29.5.2 + Compose v5.1.3 환경에서 세 단계의 모든 명령을 실제로 실행해 확인했습니다.
 > 한글·이모지 저장, 작성 시각(KST) 표시, 볼륨 데이터 보존, compose healthcheck 순서 제어까지 확인했습니다.
 > 다른 버전에서는 출력 메시지가 조금 다를 수 있습니다.
+>
+> ✅ **STEP 4 검증 기록 (2026-11-09)**: 같은 환경에서 Docker Hub 대신 **로컬 레지스트리(registry:2)** 로 tag → push → 로컬 이미지 전부 삭제 → compose pull → 실행,
+> 태그 1.0→1.1 교체 시 앱만 재생성·DB 데이터 보존, amd64+arm64 멀티플랫폼 빌드·push, 주요 에러 메시지를 실측했습니다.
+> Docker Hub 로그인·웹 화면·요금/한도는 공식 문서(2026-11-09 확인) 기준이며 실제 계정으로 push 하지는 않았습니다.
