@@ -1,0 +1,9 @@
+[    4007ms] [WARNING] jQuery.Deferred exception: webRoot is not defined ReferenceError: webRoot is not defined
+    at HTMLDocument.<anonymous> (https://www.law.go.kr/LSW/assets/js/common.js:4116:19)
+    at mightThrow (https://www.law.go.kr/LSW/assets/js/jquery-3.7.1.min.js:2163:20)
+    at process (https://www.law.go.kr/LSW/assets/js/jquery-3.7.1.min.js:2200:1) undefined @ https://www.law.go.kr/LSW/assets/js/jquery-3.7.1.min.js:2324
+[    4009ms] ReferenceError: webRoot is not defined
+    at HTMLDocument.<anonymous> (https://www.law.go.kr/LSW/assets/js/common.js:4116:19)
+    at mightThrow (https://www.law.go.kr/LSW/assets/js/jquery-3.7.1.min.js:2163:20)
+    at process (https://www.law.go.kr/LSW/assets/js/jquery-3.7.1.min.js:2200:1)
+[    4077ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://www.law.go.kr/favicon.ico:1

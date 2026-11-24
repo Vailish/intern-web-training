@@ -1,0 +1,85 @@
+- generic [active] [ref=f7e1]:
+  - status "로딩 중" [ref=f7e2]
+  - generic:
+    - term [ref=f7e6]: 바로가기 메뉴
+    - definition:
+      - link "본문 바로가기" [ref=f7e7] [cursor=pointer]:
+        - /url: javascript:void(0)
+    - definition:
+      - link "목록 바로가기" [ref=f7e8] [cursor=pointer]:
+        - /url: javascript:void(0)
+  - generic [ref=f7e11]:
+    - generic [ref=f7e13]:
+      - generic [ref=f7e16]:
+        - group "1 / 9" [ref=f7e17] [cursor=pointer]: 제정·개정이유
+        - group "2 / 9" [ref=f7e18] [cursor=pointer]: 3단비교
+        - group "3 / 9" [ref=f7e19] [cursor=pointer]: 신구법비교
+        - group "4 / 9" [ref=f7e20] [cursor=pointer]: 법령체계도
+        - group "5 / 9" [ref=f7e21] [cursor=pointer]: 법령비교
+      - generic [ref=f7e22]:
+        - generic [ref=f7e23]: 연혁
+        - button "전기통신사업법 시행령 [시행 2026. 11. 20.] [대통령령 제36831호, 2026. 11. 17., 일부개정]" [ref=f7e25] [cursor=pointer]
+        - generic [ref=f7e27]:
+          - button "글자 축소" [ref=f7e28] [cursor=pointer]
+          - generic [ref=f7e29]: 100%
+          - button "글자 확대" [ref=f7e30] [cursor=pointer]
+    - generic [ref=f7e32]:
+      - button "화면내 검색" [ref=f7e33] [cursor=pointer]
+      - generic [ref=f7e35]:
+        - generic "돋보기"
+        - generic "조문저장"
+        - generic "복사"
+        - generic "음성지원" [ref=f7e36] [cursor=pointer]:
+          - img "음성지원" [ref=f7e37]
+        - generic "점자뷰어" [ref=f7e39] [cursor=pointer]:
+          - img "점자뷰어" [ref=f7e40]
+        - generic "공유" [ref=f7e43] [cursor=pointer]:
+          - img "공유" [ref=f7e44]
+        - generic "관심법령" [ref=f7e46] [cursor=pointer]:
+          - img "관심법령추가" [ref=f7e47]
+        - generic "한자변환" [ref=f7e49] [cursor=pointer]:
+          - img "한자" [ref=f7e50]
+        - generic "내려받기" [ref=f7e52] [cursor=pointer]:
+          - img "내려받기" [ref=f7e53]
+          - generic [ref=f7e54]: 파일저장
+        - generic "프린트" [ref=f7e55] [cursor=pointer]:
+          - img "프린트" [ref=f7e56]
+    - generic [ref=f7e58]:
+      - generic [ref=f7e60]:
+        - heading "전기통신사업법 시행령" [level=3] [ref=f7e61]
+        - paragraph [ref=f7e62]: "[시행 2026. 11. 20.] [대통령령 제36831호, 2026. 11. 17., 일부개정]"
+        - generic [ref=f7e63]:
+          - link "본문 전체 열기" [ref=f7e64] [cursor=pointer]:
+            - /url: javascript:;
+          - list [ref=f7e66]:
+            - listitem [ref=f7e67]:
+              - link "본문목록열림 본문" [ref=f7e68] [cursor=pointer]:
+                - /url: javascript:;
+                - generic [ref=f7e69]: 본문목록열림
+                - text: 본문
+            - listitem [ref=f7e70]:
+              - link "부칙목록열림 부칙" [ref=f7e71] [cursor=pointer]:
+                - /url: javascript:;
+                - generic [ref=f7e72]: 부칙목록열림
+                - text: 부칙
+            - listitem [ref=f7e73]:
+              - link "별표목록열림 별표" [ref=f7e74] [cursor=pointer]:
+                - /url: javascript:;
+                - generic [ref=f7e75]: 별표목록열림
+                - text: 별표
+            - listitem [ref=f7e76]:
+              - link "서식목록열림 서식" [ref=f7e77] [cursor=pointer]:
+                - /url: javascript:;
+                - generic [ref=f7e78]: 서식목록열림
+                - text: 서식
+      - button "목록 닫기" [ref=f7e79] [cursor=pointer]
+      - generic [ref=f7e84]:
+        - heading "법령정보" [ref=f7e85]
+        - generic [ref=f7e86]: 현재 시행되고 있는 헌법, 법률, 대통령령, 총리령, 부령과 국회규칙, 대법원규칙, 헌법재판소규칙, 선거관리위원회규칙, 감사원규칙을 찾아볼 수 있습니다.
+        - paragraph [ref=f7e87]: 법령내용이나 법령명에 포함된 용어를 입력하거나, 공포번호 및 공포일자를 입력하십시오
+        - generic [ref=f7e88]:
+          - generic [ref=f7e89]: "# 법령내용"
+          - generic [ref=f7e90]: "# 법령명"
+          - generic [ref=f7e91]: "# 법령명에 포함된 용어"
+          - generic [ref=f7e92]: "# 공포번호"
+          - generic [ref=f7e93]: "# 공포일자"
