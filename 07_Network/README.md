@@ -96,6 +96,7 @@ java "-Dfile.encoding=UTF-8" TcpEchoServer.java
 
 ## 더 공부하고 싶다면
 
+- [08_AI](../08_AI/README.md) — 다음 모듈. LLM API도 HTTP + JSON이고, `Read timed out`이 가장 흔한 에러입니다
 - [웹서버·WAS 동작원리 PDF](../99_참고자료/02_웹_백엔드/웹서버_WAS_동작원리_인턴초급개발자.pdf) — 이 모듈 위층(웹서버·WAS 구조)
 - [MDN — HTTP 개요](https://developer.mozilla.org/ko/docs/Web/HTTP/Overview) — HTTP 공식 수준 레퍼런스 (한국어)
 - [Wireshark 사용자 가이드](https://www.wireshark.org/docs/wsug_html_chunked/) — 공식 문서 (영어)
