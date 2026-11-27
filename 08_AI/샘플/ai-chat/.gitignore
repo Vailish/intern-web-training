@@ -1,0 +1,12 @@
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+bin/
+out/
+.idea
+*.iml
+.vscode/
+
+### API 키가 들어갈 수 있는 로컬 설정은 절대 커밋하지 않습니다 ###
+.env
+application-local.properties
